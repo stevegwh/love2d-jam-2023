@@ -7,7 +7,7 @@ function love.setup()
 end
 
 function love.load()
-    Input = _baton.new {
+    input = _baton.new {
         controls = {
             left = { 'key:left', 'key:a', 'axis:leftx-', 'button:dpleft' },
             right = { 'key:right', 'key:d', 'axis:leftx+', 'button:dpright' },
@@ -30,6 +30,7 @@ function love.draw()
 end
 
 function love.update(dt)
+    input:update()
     gameManager:update(dt)
 end
 
