@@ -1,5 +1,7 @@
 class = require 'lib.middleclass'
 local _baton = require 'lib.baton'
+local gm = require('gameManager') ---@type gameManager
+local gameManager ---@type gameManager
 function love.setup()
 
 end
@@ -20,13 +22,15 @@ function love.load()
             move = { 'left', 'right', 'up', 'down' }
         },
     }
+    gameManager = gm:new() -- not sure if 'forward declaring' gameManager is necessary
 end
 
 function love.draw()
-    love.graphics.print('Hello World!', 400, 300)
+    gameManager:draw()
 end
 
-function love.update()
+function love.update(dt)
+    gameManager:update(dt)
 end
 
 function love.keypressed(key, u)
