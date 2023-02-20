@@ -4,7 +4,7 @@ local testGame = require 'testGame'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {cableGame, testGame}
+    self.allMiniGames = {cableGame}
     self.currentMiniGame = self:getRandomMiniGame()
 end
 
