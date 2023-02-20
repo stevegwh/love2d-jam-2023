@@ -1,10 +1,10 @@
 local cableGame = require 'cableGame'
-local testGame = require 'testGame'
-
+--local testGame = require 'testGame'
+local dvdBounce = require 'dvdBounce'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {cableGame, testGame}
+    self.allMiniGames = {dvdBounce, cableGame}
     self.currentMiniGame = self:getRandomMiniGame()
 end
 

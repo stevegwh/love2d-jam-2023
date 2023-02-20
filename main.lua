@@ -16,7 +16,7 @@ function love.load()
             action = { 'key:space', 'button:a' },
             bomb = { 'key:e', 'button:y' },
             shift = { 'key:lshift', 'button:x' },
-            pause = { 'key:k' },
+            pause = { 'key:k' }
         },
         pairs = {
             move = { 'left', 'right', 'up', 'down' }
