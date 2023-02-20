@@ -70,6 +70,7 @@ function cableGame:gameWin()
 end
 
 function cableGame:draw()
+    love.graphics.setBackgroundColor(0, 0.5, 1)
     if self.gameFail then
         love.graphics.print("FAILED!", 450, 300)
     elseif self.gameSucceed then
@@ -79,7 +80,6 @@ function cableGame:draw()
           -- Draw the collision area (for debugging purposes only)
         love.graphics.rectangle("fill", collision_area.x, collision_area.y, collision_area.width, collision_area.height + 8)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.setBackgroundColor(0, 0.5, 1)
         love.graphics.print(self.timer.count, 0, 0)
         love.graphics.print("PLUG IN THE CABLE!", 450, 300)
         love.graphics.draw(self.cable.sprite, self.cable.pos.x, self.cable.pos.y, 0, 4, 4)
