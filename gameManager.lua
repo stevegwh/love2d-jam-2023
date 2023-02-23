@@ -1,11 +1,13 @@
 local cableGame = require 'cableGame'
+local catGame = require 'catGame'
 --local testGame = require 'testGame'
 local dvdBounce = require 'dvdBounce'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {dvdBounce, cableGame}
+    self.allMiniGames = {dvdBounce, cableGame, catGame}
     self.currentMiniGame = self:getRandomMiniGame()
+    self.catGame = catGame:new()
 end
 
 function gameManager:getRandomMiniGame()
@@ -20,7 +22,7 @@ function gameManager:update(dt)
 end
 
 function gameManager:draw()
-    self.currentMiniGame:draw()
+   self.currentMiniGame:draw()
 end
 
 return gameManager
