@@ -53,7 +53,7 @@ function cableGame:update(dt)
         self.cable.pos.x = self.cable.pos.x + self.cable.moveSpeed * dt
     end
 
-    if input:down('action') then
+    if love.mouse.isDown(1) then
         self.cable.spacePressed = true
         self.timer:pause(true)
     end
@@ -74,7 +74,7 @@ function cableGame:draw()
     if self.gameFail then
         love.graphics.print("FAILED!", 450, 300)
     elseif self.gameSucceed then
-        love.graphics.print("SUCCEED!", 450, 300)
+        love.graphics.print("SUCCESS!", 450, 300)
     else
         love.graphics.setColor(0.8, 0.8, 0.8)
           -- Draw the collision area (for debugging purposes only)

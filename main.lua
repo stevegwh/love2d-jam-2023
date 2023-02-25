@@ -14,7 +14,6 @@ function love.load()
             up = { 'key:up', 'key:w', 'axis:lefty-', 'button:dpup' },
             down = { 'key:down', 'key:s', 'axis:lefty+', 'button:dpdown' },
             action = { 'key:space', 'button:a' },
-            bomb = { 'key:e', 'button:y' },
             shift = { 'key:lshift', 'button:x' },
             pause = { 'key:k' }
         },

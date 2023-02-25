@@ -2,21 +2,32 @@ local cableGame = require 'cableGame'
 local catGame = require 'catGame'
 --local testGame = require 'testGame'
 local dvdBounce = require 'dvdBounce'
+local runningMan = require 'runningMan'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {dvdBounce, cableGame, catGame}
-    self.currentMiniGame = self:getRandomMiniGame()
+    self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan}
+    --self.allMiniGames = {runningMan}
+    self.playedMiniGames = {}
+    self.currentMiniGame = nil
+    self:getRandomMiniGame()
     self.catGame = catGame:new()
 end
 
 function gameManager:getRandomMiniGame()
-    return self.allMiniGames[math.random(#self.allMiniGames)]:new()
+    if #self.allMiniGames == 0 then
+        self.allMiniGames = self.playedMiniGames
+        self.playedMiniGames = {}
+    end
+    local randNum = math.floor(math.random(#self.allMiniGames))
+    self.currentMiniGame = self.allMiniGames[randNum]:new()
+    table.insert(self.playedMiniGames, #self.playedMiniGames + 1, self.allMiniGames[randNum])
+    table.remove(self.allMiniGames, randNum)
 end
 
 function gameManager:update(dt)
     if self.currentMiniGame.gameCompleted then
-        self.currentMiniGame = self:getRandomMiniGame()
+        self:getRandomMiniGame()
     end
     self.currentMiniGame:update(dt)
 end

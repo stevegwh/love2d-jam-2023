@@ -14,12 +14,9 @@ function catGame:initialize()
     self.gameSucceed = false
     self.timer = timer:new(3)
 
-    self.colMax = math.floor(love.graphics:getHeight() / self.dog:getHeight()) - 1
-    self.rowMax = math.floor(love.graphics:getWidth() / self.dog:getWidth()) - 1
-    print(self.colMax * self.rowMax)
+    self.colMax = math.floor(love.graphics:getHeight() / self.dog:getHeight()) - 2
+    self.rowMax = math.floor(love.graphics:getWidth() / self.dog:getWidth()) - 2
     self.randomNumber = math.random(self.colMax * self.rowMax)
-    print(self.randomNumber)
-    
 end
 
 function catGame:update(dt)
@@ -64,13 +61,13 @@ function catGame:draw()
     if self.gameFail then
         love.graphics.print("FAILED!", 450, 300)
     elseif self.gameSucceed then
-        love.graphics.print("SUCCEED!", 450, 300)
+        love.graphics.print("SUCCESS!", 450, 300)
     else
-
+        love.graphics.print("CLICK ON THE CAT!", love.graphics.getWidth()/2 - 50, 30)
         local isCatDrawn = false
 
-        for col = 0,  self.colMax do
-            for row = 0,  self.rowMax do
+        for col = 1,  self.colMax do
+            for row = 1,  self.rowMax do
                 if col * row == self.randomNumber and not isCatDrawn then
                     self.cat.pos.x = row * self.dog:getWidth()
                     self.cat.pos.y = col * self.dog:getHeight()
