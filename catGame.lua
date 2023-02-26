@@ -1,4 +1,5 @@
-local catGame = class('catGame')
+local game = require 'game'
+local catGame = class('catGame', game)
 local timer = require('timer')
 
 function catGame:initialize()
@@ -9,30 +10,15 @@ function catGame:initialize()
     }
     self.dog = love.graphics.newImage('img/dog.png')
 
-    self.gameCompleted = false
-    self.gameFail = false
-    self.gameSucceed = false
-    self.timer = timer:new(3)
-
     self.colMax = math.floor(love.graphics:getHeight() / self.dog:getHeight()) - 2
     self.rowMax = math.floor(love.graphics:getWidth() / self.dog:getWidth()) - 2
     self.randomNumber = math.random(self.colMax * self.rowMax)
+
+    game:initialize(3)
 end
 
 function catGame:update(dt)
-    self.timer:update(dt)
-
-    if self.gameFail or self.gameSucceed then
-        if not self.timer:hasFinished() then
-            return
-        end
-        self.gameCompleted = true
-    end
-
-    if self.timer:hasFinished() then
-        self:gameOver()
-    end
-
+    game.update(self, dt)
 
     if love.mouse.isDown(1) then
         local x = love.mouse:getX()
@@ -44,16 +30,6 @@ function catGame:update(dt)
             end
     
     end
-end
-
-function catGame:gameOver()
-    self.gameFail = true
-    self.timer = timer:new(2)
-end
-
-function catGame:gameWin()
-    self.gameSucceed = true
-    self.timer = timer:new(2)
 end
 
 function catGame:draw()
@@ -80,7 +56,7 @@ function catGame:draw()
         end
 
         love.graphics.setColor(1, 1, 1)
-        love.graphics.print(self.timer.count, 0, 0)
+        love.graphics.print(self.timerMax - math.floor(self.timer.count), 0, 0)
 
     end
 end

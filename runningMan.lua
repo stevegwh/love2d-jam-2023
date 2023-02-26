@@ -1,4 +1,5 @@
-local runningMan = class('runningMan')
+local game = require 'game'
+local runningMan = class('runningMan', game) 
 local timer = require('timer')
 
 local obstacle = class('obstacle')
@@ -32,7 +33,7 @@ function runningMan:initialize()
 
         table.insert(self.allObstacles, #self.allObstacles + 1, obstacle:new(
             {x = i * 1000 + randNum, y = self.groundpos + 25}, 
-            {x = 1000, y = 0}, 
+            {x = 800, y = 0}, 
             sprite)
         )
     end
@@ -40,14 +41,11 @@ function runningMan:initialize()
     -- Add the bus at the end of the obstacles (the objective)
     table.insert(self.allObstacles, #self.allObstacles + 1, obstacle:new(
         {x = (#self.allObstacles + 1) * 1000, y = self.groundpos - 25}, 
-        {x = 1000, y = 0}, 
+        {x = 800, y = 0}, 
         love.graphics.newImage('img/bus.png'), true)
     )
 
-    self.gameCompleted = false
-    self.gameFail = false
-    self.gameSucceed = false
-    self.timer = timer:new(15)
+    game.initialize(self, 15)
 end
 
 function runningMan:checkCollision()
@@ -70,18 +68,7 @@ function runningMan:checkCollision()
 end
 
 function runningMan:update(dt)
-    self.timer:update(dt)
-
-    if self.gameFail or self.gameSucceed then
-        if not self.timer:hasFinished() then
-            return
-        end
-        self.gameCompleted = true
-    end
-
-    if self.timer:hasFinished() then
-        self:gameOver()
-    end
+    game.update(self, dt)
 
     self:checkCollision()
 
@@ -104,16 +91,6 @@ function runningMan:update(dt)
     end
 end
 
-function runningMan:gameOver()
-    self.gameFail = true
-    self.timer = timer:new(2)
-end
-
-function runningMan:gameWin()
-    self.gameSucceed = true
-    self.timer = timer:new(2)
-end
-
 function runningMan:draw()
     love.graphics.setBackgroundColor(1, 1, 1)
     love.graphics.setColor(0, 0, 0)
@@ -122,7 +99,7 @@ function runningMan:draw()
     elseif self.gameSucceed then
         love.graphics.print("SUCCESS!", 450, 300)
     else
-        love.graphics.print(self.timer.count, 0, 0)
+        love.graphics.print(self.timerMax - math.floor(self.timer.count), 0, 0)
         love.graphics.print("CATCH YOUR BUS!", 450, 300)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.player.sprite, self.player.pos.x, self.player.pos.y)

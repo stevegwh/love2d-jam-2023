@@ -1,36 +1,53 @@
 class = require 'lib.middleclass'
 local _baton = require 'lib.baton'
+local timer = require 'timer'
 local gm = require('gameManager') ---@type gameManager
+local mMenu = require 'mainMenu' ---@type mainMenu
 local gameManager ---@type gameManager
+local mainMenu ---@type mainMenu
+local gameStarted = false
+local buttonPressed = false
+local buttonPressDelayTimer = 0
+local buttonPressMaxDelay = 0.2
+function startGame()
+    buttonPressed = true
+    buttonPressDelayTimer = 0
+end
+
 function love.setup()
 
 end
 
 function love.load()
-    input = _baton.new {
-        controls = {
-            left = { 'key:left', 'key:a', 'axis:leftx-', 'button:dpleft' },
-            right = { 'key:right', 'key:d', 'axis:leftx+', 'button:dpright' },
-            up = { 'key:up', 'key:w', 'axis:lefty-', 'button:dpup' },
-            down = { 'key:down', 'key:s', 'axis:lefty+', 'button:dpdown' },
-            action = { 'key:space', 'button:a' },
-            shift = { 'key:lshift', 'button:x' },
-            pause = { 'key:k' }
-        },
-        pairs = {
-            move = { 'left', 'right', 'up', 'down' }
-        },
-    }
+    font = love.graphics.newFont(20)
     gameManager = gm:new() -- not sure if 'forward declaring' gameManager is necessary
+    mainMenu = mMenu:new()
 end
 
 function love.draw()
-    gameManager:draw()
+    love.graphics.setFont(font)
+    if gameStarted then
+        gameManager:draw()
+    else
+        mainMenu:draw()
+    end
 end
 
 function love.update(dt)
-    input:update()
-    gameManager:update(dt)
+    -- I am sorry
+    if buttonPressed then
+        if buttonPressDelayTimer >= buttonPressMaxDelay then
+            gameStarted = true
+            buttonPressed = false
+        else
+            buttonPressDelayTimer = buttonPressDelayTimer + dt
+        end
+    end
+    if gameStarted then
+        gameManager:update(dt)
+    else
+        mainMenu:update(dt)
+    end
 end
 
 function love.keypressed(key, u)

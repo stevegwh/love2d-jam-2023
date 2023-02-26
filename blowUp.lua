@@ -1,5 +1,6 @@
 local timer = require 'timer'
-local blowUp = class('blowup')
+local game = require 'game'
+local blowUp = class('blowup', game)
 
 function blowUp:initialize()
     self.balloon = {
@@ -9,25 +10,11 @@ function blowUp:initialize()
         maxScale = 1.5
     }
     self.mouseDown = false
-    self.gameCompleted = false
-    self.gameFail = false
-    self.gameSucceed = false
-    self.timer = timer:new(8)
+    game.initialize(self, 8)
 end
 
 function blowUp:update(dt)
-    self.timer:update(dt)
-
-    if self.gameFail or self.gameSucceed then
-        if not self.timer:hasFinished() then
-            return
-        end
-        self.gameCompleted = true
-    end
-
-    if self.timer:hasFinished() then
-        self:gameOver()
-    end
+    game.update(self, dt)
 
     self.balloon.scale = self.balloon.scale - 0.2 * dt
     if self.balloon.scale < self.balloon.minScale then
@@ -45,16 +32,6 @@ function blowUp:update(dt)
     end
 end
 
-function blowUp:gameWin()
-    self.gameSucceed = true
-    self.timer = timer:new(2)
-end
-
-function blowUp:gameOver()
-    self.gameFail = true
-    self.timer = timer:new(2)
-end
-
 function blowUp:draw()
     love.graphics.setBackgroundColor(1, 0.5, 1)
     love.graphics.setColor(0, 0, 0)
@@ -67,7 +44,7 @@ function blowUp:draw()
           -- Draw the collision area (for debugging purposes only)
         --love.graphics.rectangle("fill", collision_area.x, collision_area.y, collision_area.width, collision_area.height + 8)
         
-        love.graphics.print(self.timer.count, 0, 0)
+        love.graphics.print(self.timerMax - math.floor(self.timer.count), 0, 0)
         love.graphics.print("BLOW UP THE BALLOON!", 450, 100)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.balloon.sprite, love.graphics.getWidth()/2 - self.balloon.sprite:getWidth()/2, love.graphics.getHeight()/3*2 - self.balloon.sprite:getHeight()/2, 0, self.balloon.scale, self.balloon.scale)

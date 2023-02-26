@@ -1,13 +1,8 @@
-local dvdBounce = class('dvdBounce')
+local game = require 'game'
+local dvdBounce = class('dvdBounce', game)
 local timer = require('timer')
 
 function dvdBounce:initialize()
-    self.gameCompleted = false
-    self.timer = timer:new(3)
-    self.gameCompleted = false
-    self.gameFail = false
-    self.gameSucceed = false
-
     -- Load sprites
     self.sprite = love.graphics.newImage('img/dvdheart.png')
     
@@ -21,21 +16,11 @@ function dvdBounce:initialize()
     -- Set sprite dimensions
     self.spriteWidth = self.sprite:getWidth()
     self.spriteHeight = self.sprite:getHeight()
+    game.initialize(self, 3)
 end
 
 function dvdBounce:update(dt)
-    self.timer:update(dt)
-
-    if self.gameFail or self.gameSucceed then
-        if not self.timer:hasFinished() then
-            return
-        end
-        self.gameCompleted = true
-    end
-
-    if self.timer:hasFinished() then
-        self:gameOver()
-    end
+    game.update(self, dt)
 
     -- Update sprite positions
     for i, sprite in ipairs(self.sprites) do
@@ -69,16 +54,6 @@ function dvdBounce:update(dt)
     end
 end
 
-function dvdBounce:gameOver()
-    self.gameFail = true
-    self.timer = timer:new(2)
-end
-
-function dvdBounce:gameWin()
-    self.gameSucceed = true
-    self.timer = timer:new(2)
-end
-
 function dvdBounce:draw()
     love.graphics.setBackgroundColor(0, 0, 0)
     if self.gameFail then
@@ -91,7 +66,7 @@ function dvdBounce:draw()
         for i, sprite in ipairs(self.sprites) do
             love.graphics.draw(sprite.image, sprite.x, sprite.y)
         end
-        love.graphics.print(self.timer.count, 0, 0)
+        love.graphics.print(self.timerMax - math.floor(self.timer.count), 0, 0)
     end
     --love.graphics.setColor(0, 0, 0)
 end

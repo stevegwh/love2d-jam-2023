@@ -12,7 +12,8 @@ function cableGame:initialize()
     self.gameCompleted = false
     self.gameFail = false
     self.gameSucceed = false
-    self.timer = timer:new(3)
+    self.timerMax = 3
+    self.timer = timer:new(self.timerMax)
     --self.cable.sprite = love.graphics.newImage('img/usbcable.png')
     self.phoneSprite = love.graphics.newImage('img/phone.png')
 end
@@ -80,7 +81,7 @@ function cableGame:draw()
           -- Draw the collision area (for debugging purposes only)
         love.graphics.rectangle("fill", collision_area.x, collision_area.y, collision_area.width, collision_area.height + 8)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.print(self.timer.count, 0, 0)
+        love.graphics.print(self.timerMax - math.floor(self.timer.count), 0, 0)
         love.graphics.print("PLUG IN THE CABLE!", 450, 300)
         love.graphics.draw(self.cable.sprite, self.cable.pos.x, self.cable.pos.y, 0, 4, 4)
         love.graphics.draw(self.phoneSprite, love.graphics:getWidth()/2 - self.phoneSprite:getWidth()*3, -self.phoneSprite:getHeight()*5, 0, 6, 6)
