@@ -8,8 +8,8 @@ local blowUp = require 'blowUp'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    --self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan, fallingPhoneGame}
-    self.allMiniGames = {blowUp}
+    self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan, fallingPhoneGame, blowUp}
+    --self.allMiniGames = {blowUp}
     self.playedMiniGames = {}
     self.currentMiniGame = nil
     self:getRandomMiniGame()
