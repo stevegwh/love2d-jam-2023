@@ -1,4 +1,5 @@
 local cableGame = require 'cableGame'
+local fallingPhoneGame = require 'fallingPhoneGame'
 local catGame = require 'catGame'
 --local testGame = require 'testGame'
 local dvdBounce = require 'dvdBounce'
@@ -6,7 +7,7 @@ local runningMan = require 'runningMan'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan}
+    self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan, fallingPhoneGame}
     --self.allMiniGames = {runningMan}
     self.playedMiniGames = {}
     self.currentMiniGame = nil
