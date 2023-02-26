@@ -42,9 +42,12 @@ function catGame:draw()
         love.graphics.print("CLICK ON THE CAT!", love.graphics.getWidth()/2 - 50, 30)
         local isCatDrawn = false
 
+        local index = 0
         for col = 1,  self.colMax do
+            index = index + 1
             for row = 1,  self.rowMax do
-                if col * row == self.randomNumber and not isCatDrawn then
+                index = index + 1
+                if index == self.randomNumber and not isCatDrawn then
                     self.cat.pos.x = row * self.dog:getWidth()
                     self.cat.pos.y = col * self.dog:getHeight()
                     love.graphics.draw(self.cat.sprite, row * self.dog:getWidth(), col * self.dog:getHeight())
