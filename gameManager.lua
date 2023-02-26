@@ -4,11 +4,12 @@ local catGame = require 'catGame'
 --local testGame = require 'testGame'
 local dvdBounce = require 'dvdBounce'
 local runningMan = require 'runningMan'
+local blowUp = require 'blowUp'
 local gameManager = class('gameManager')
 
 function gameManager:initialize()
-    self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan, fallingPhoneGame}
-    --self.allMiniGames = {runningMan}
+    --self.allMiniGames = {dvdBounce, cableGame, catGame, runningMan, fallingPhoneGame}
+    self.allMiniGames = {blowUp}
     self.playedMiniGames = {}
     self.currentMiniGame = nil
     self:getRandomMiniGame()
