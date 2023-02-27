@@ -1,6 +1,5 @@
 local timer = require 'timer'
-local game = require 'game'
-local blowUp = class('blowup', game)
+local blowUp = class('blowup')
 
 function blowUp:initialize()
     self.balloon = {
@@ -10,11 +9,26 @@ function blowUp:initialize()
         maxScale = 1.5
     }
     self.mouseDown = false
-    game.initialize(self, 8)
+    self.gameCompleted = false
+    self.gameFail = false
+    self.gameSucceed = false
+    self.timerMax = 8
+    self.timer = timer:new(8)
 end
 
 function blowUp:update(dt)
-    game.update(self, dt)
+    self.timer:update(dt)
+
+    if self.gameFail or self.gameSucceed then
+        if not self.timer:hasFinished() then
+            return
+        end
+        self.gameCompleted = true
+    end
+
+    if self.timer:hasFinished() then
+        self:gameOver()
+    end
 
     self.balloon.scale = self.balloon.scale - 0.2 * dt
     if self.balloon.scale < self.balloon.minScale then
@@ -30,6 +44,16 @@ function blowUp:update(dt)
     if self.balloon.scale > self.balloon.maxScale then
         self:gameWin()
     end
+end
+
+function blowUp:gameWin()
+    self.gameSucceed = true
+    self.timer = timer:new(2)
+end
+
+function blowUp:gameOver()
+    self.gameFail = true
+    self.timer = timer:new(2)
 end
 
 function blowUp:draw()

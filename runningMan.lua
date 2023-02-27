@@ -1,5 +1,4 @@
-local game = require 'game'
-local runningMan = class('runningMan', game) 
+local runningMan = class('runningMan')
 local timer = require('timer')
 
 local obstacle = class('obstacle')
@@ -33,7 +32,7 @@ function runningMan:initialize()
 
         table.insert(self.allObstacles, #self.allObstacles + 1, obstacle:new(
             {x = i * 1000 + randNum, y = self.groundpos + 25}, 
-            {x = 800, y = 0}, 
+            {x = 1000, y = 0}, 
             sprite)
         )
     end
@@ -41,11 +40,15 @@ function runningMan:initialize()
     -- Add the bus at the end of the obstacles (the objective)
     table.insert(self.allObstacles, #self.allObstacles + 1, obstacle:new(
         {x = (#self.allObstacles + 1) * 1000, y = self.groundpos - 25}, 
-        {x = 800, y = 0}, 
+        {x = 1000, y = 0}, 
         love.graphics.newImage('img/bus.png'), true)
     )
 
-    game.initialize(self, 15)
+    self.gameCompleted = false
+    self.gameFail = false
+    self.gameSucceed = false
+    self.timerMax = 15
+    self.timer = timer:new(self.timerMax)
 end
 
 function runningMan:checkCollision()
@@ -68,7 +71,18 @@ function runningMan:checkCollision()
 end
 
 function runningMan:update(dt)
-    game.update(self, dt)
+    self.timer:update(dt)
+
+    if self.gameFail or self.gameSucceed then
+        if not self.timer:hasFinished() then
+            return
+        end
+        self.gameCompleted = true
+    end
+
+    if self.timer:hasFinished() then
+        self:gameOver()
+    end
 
     self:checkCollision()
 
@@ -89,6 +103,16 @@ function runningMan:update(dt)
         
         self.player.vel.y = self.player.vel.y - 3000 * dt
     end
+end
+
+function runningMan:gameOver()
+    self.gameFail = true
+    self.timer = timer:new(2)
+end
+
+function runningMan:gameWin()
+    self.gameSucceed = true
+    self.timer = timer:new(2)
 end
 
 function runningMan:draw()
