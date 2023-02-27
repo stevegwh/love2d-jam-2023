@@ -9,6 +9,7 @@ local gameStarted = false
 local buttonPressed = false
 local buttonPressDelayTimer = 0
 local buttonPressMaxDelay = 0.2
+local soundSource
 function startGame()
     buttonPressed = true
     buttonPressDelayTimer = 0
@@ -19,6 +20,7 @@ function love.setup()
 end
 
 function love.load()
+    soundSource = love.audio.newSource("sound/beepbox.mp3", "stream")
     font = love.graphics.newFont(20)
     gameManager = gm:new() -- not sure if 'forward declaring' gameManager is necessary
     mainMenu = mMenu:new()
@@ -48,6 +50,10 @@ function love.update(dt)
     else
         mainMenu:update(dt)
     end
+
+    if not soundSource:isPlaying() then
+		love.audio.play(soundSource)
+	end
 end
 
 function love.keypressed(key, u)
